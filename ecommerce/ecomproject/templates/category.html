@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+    {% if category %}
+        {{category.description|truncatewords:150}}
+    {% else %}
+        BuyNest is your one-stop e-commerce shop for all your shopping needs.
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{category.name}}-BuyNest store
+    {% else %}
+        Your Ultimate Shopping Destination: BuyNest
+    {% endif %}
+{% endblock %}
+{% block body %}
+{% if category %}
+<div>
+    <div class="row style_row">
+        <div class="style_auto">
+            <p><a href="{% url 'ecom:inventory' %}">All products</a> </p>
+    </div>
+        </div>
+</div>
+{% endif %}
+
+<div class="mx-auto">
+    {% if category %}
+    <img class="style_image" src="{{category.img.url}}"  alt="{{category.name}}">
+</div>
+<br>
+<div>
+    <h1 class="text-center style_title">{{category.name}}</h1>
+    <p class="text-justify">{{category.desc}}</p>
+</div>
+{% else %}
+<div>
+    <img class="style_image pad_image" src="{% static 'img/banner.gif' %}" alt="Entire inventory" width="1600" height="450">
+</div>
+<br>
+<div>
+    <h1 class="text-center style_title">Buynest</h1>
+    <p class="text-justify"> Explore our diverse selection, enjoy competitive prices, and shop with confidence in the comfort of your own nest. Your perfect purchase is just a click away with BuyNest!</p>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for products in products.object_list %}
+        <div class="style_margin col-9 col-sm-12 col-md-3 col-lg-3">
+            <div class="card text-center shadow-lg " style="width: 18rem;">
+                <a href="{{products.get_url}}"><img class="card-img-top" src="{{products.img.url}}" width="338" height="416" alt="{{products.name}}"></a>
+                <div class="card-body">
+                    <h4>{{products.name}}</h4>
+                    <h2>${{products.price}}</h2>
+
+
+
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %}active{% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

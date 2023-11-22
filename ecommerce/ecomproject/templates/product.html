@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+
+        {{product.description|truncatewords:150}}
+
+
+
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{product.name}}-BuyNest store
+
+    {% endif %}
+{% endblock %}
+{% block body %}
+<div class="row prod_row">
+    <div class="mx-auto">
+        <p><a href="{% url 'ecom:inventory' %}">Home</a>| <a href="{{product.category.get_url}}">{{product.category}}</a>|{{product.name}} </p>
+    </div>
+</div>
+<div class="container">
+<br>
+<div class="row">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+        <div style="min-width: 18rem;">
+            <img src="{{product.img.url}}" alt="{{product.name}}">
+        </div>
+    </div>
+
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+            <div>
+            <h2 class="prod_title">{{product.name}}</h2>
+            <h3>${{product.price}}</h3>
+            <p class="style_title">Description:</p>
+            <p class="text-justify prod_text">{{product.desc}}</p>
+            {% if product.stock <= 0 %}
+            <p class="text-justify prod_text" style="color:red;"><b>Out of stock</b></p>
+            {% else %}
+            <a class="btn btn-secondary bt_style" href="{% url 'cart:add_cart' product.id %}">Add to cart</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% endblock %}
